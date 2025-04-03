@@ -1,3 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMCAST Dashboard | Dashboard</title>
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./img/svg/images.png" type="image/x-icon">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="./css/style.css">
+ <style>
+        .progress-container {
+            width: 100%;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4caf50;
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .status-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #767676;
+;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layer"></div>
+<!-- ! Body -->
+<a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+<div class="page-flex">
+
+
+  <!-- ! Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-start">
+        <div class="sidebar-head">
+            <span class="sidebar-user-img">	
+	<picture><source srcset="./img/svg/images.png" type="image/webp"><img src="./img/svg/images.png" alt="User name"></picture>
+	</span>
+            <a href="/" class="logo-wrapper" title="Home">
+                <span class="sr-only">Home</span>
+                <span class="icon" aria-hidden="true"></span>
+                <div class="logo-text">
+                    <span class="logo-title">COMCAST</span>
+                    <span class="logo-subtitle">Dashboard</span>
+                </div>
+            </a>
+            <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+                <span class="sr-only">Toggle menu</span>
+                <span class="icon menu-toggle" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="sidebar-body">
+            <ul class="sidebar-body-menu">
+              
+                <li>
+                    <a class="active" href="/"><span class="icon home" aria-hidden="true"></span>BILL RUN Statistics</a>
+                </li>
+                <li>
+				 <li>
+                    <a class="show-cat-btn" href="##">
+                        <span class="icon folder" aria-hidden="true"></span>Categories
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="APPLY_ALLOCATE.html">Apply Allocate</a>
+                        </li>
+						<li>
+                            <a href="Invoice_Printing.html">Invoice_Printing</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="show-cat-btn" href="##">
+                        <span class="icon user-3" aria-hidden="true"></span>Users
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="users-01.html">Users-01</a>
+                        </li>
+                        <li>
+                            <a href="users-02.html">Users-02</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="##"><span class="icon setting" aria-hidden="true"></span>Settings</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <a href="##" class="sidebar-user">
+            <span class="sidebar-user-img">
+                <picture><source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp"><img src="./img/avatar/avatar-illustrated-02.png" alt="User name"></picture>
+            </span>
+            <div class="sidebar-user-info">
+                <span class="sidebar-user__title">Aravinth</span>
+                <span class="sidebar-user__subtitle">Support manager</span>
+            </div>
+        </a>
+    </div>
+</aside>
+
+
+  <div class="main-wrapper">
+    <!-- ! Main nav -->
+
+    <nav class="main-nav--bg">
+  <div class="container main-nav">
+    <div class="main-nav-start">
+      <div class="search-wrapper">
+        <i data-feather="search" aria-hidden="true"></i>
+        <input type="text" placeholder="Enter keywords ..." required>
+      </div>
+    </div>
+    <div class="main-nav-end">
+      <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+        <span class="sr-only">Toggle menu</span>
+        <span class="icon menu-toggle--gray" aria-hidden="true"></span>
+      </button>
+      
+      <div class="lang-switcher-wrapper">
+        <button class="lang-switcher transparent-btn" id="selected-date">
+            Select Date
+            <i data-feather="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="lang-menu dropdown" id="date-list"></ul>
+    </div>
+
+
+	  
+      <button class="theme-switcher gray-circle-btn" type="button" title="Switch theme">
+        <span class="sr-only">Switch theme</span>
+        <i class="sun-icon" data-feather="sun" aria-hidden="true"></i>
+        <i class="moon-icon" data-feather="moon" aria-hidden="true"></i>
+      </button>
+      <div class="nav-user-wrapper">
+        <button href="##" class="nav-user-btn dropdown-btn" title="My profile" type="button">
+          <span class="sr-only">My profile</span>
+          <span class="nav-user-img">
+            <picture><source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp"><img src="./img/avatar/avatar-illustrated-02.png" alt="User name"></picture>
+          </span>
+        </button>
+        <ul class="users-item-dropdown nav-user-dropdown dropdown">
+          <li><a href="##">
+              <i data-feather="user" aria-hidden="true"></i>
+              <span>Profile</span>
+            </a></li>
+          <li><a href="##">
+              <i data-feather="settings" aria-hidden="true"></i>
+              <span>Account settings</span>
+            </a></li>
+          <li><a class="danger" href="##">
+              <i data-feather="log-out" aria-hidden="true"></i>
+              <span>Log out</span>
+            </a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    <!-- ! Main -->
+
+<iframe width="100%" height="80%" src="https://comcastcorp-my.sharepoint.com/my?id=%2Fpersonal%2Fakanna741%5Fapac%5Fcomcast%5Fcom%2FDocuments%2FDocuments%2FDAILY%5FPROGRESS%5FDASHBOARD%2Epbix&parent=%2Fpersonal%2Fakanna741%5Fapac%5Fcomcast%5Fcom%2FDocuments%2FDocuments" frameborder="0" allowFullScreen="true"></iframe>
+
+
+    <footer class="footer">
+  <div class="container footer--flex">
+    <div class="footer-start">
+      <p>2025 © Comcast Dashboard - <a href="#" target="_blank"
+          rel="noopener noreferrer"></a></p>
+    </div>
+    <ul class="footer-end">
+      <li><a href="##">About</a></li>
+      <li><a href="##">Support</a></li>
+      <li><a href="##">Puchase</a></li>
+    </ul>
+  </div>
+</footer></div></div></div>
+<!-- Chart library -->
+<script src="./plugins/chart.min.js"></script>
+<!-- Icons library -->
+<script src="plugins/feather.min.js"></script>
+<!-- Custom scripts -->
+<script>
 "use strict";
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -72,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
       showCatBtns.forEach(function (showCatBtn) {
         var catSubMenu = showCatBtn.nextElementSibling;
         showCatBtn.addEventListener('click', function (e) {
-          e.preventDefault();
+          e.preventhefault();
           catSubMenu.classList.toggle('visible');
           var catBtnToRotate = document.querySelector('.category__btn');
           catBtnToRotate.classList.toggle('rotated');
@@ -333,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var myChart = new Chart(myCanvas, {
         type: 'line',
         data: {
-          labels: ['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          labels: ['Sep','Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', ],
           datasets: [{
             label: 'CUSTOMERS',
             data: [35, 27, 40, 15, 30, 25, 45],
@@ -391,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             title: {
               display: true,
-              text: ['Visitor statistics', 'Nov - July'],
+              text: ['BILL RUN statistics', 'Sep - Mar'],
               align: 'start',
               color: '#171717',
               font: {
@@ -520,39 +733,58 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+function updateProgress(percentage) {
+            const progressBar = document.getElementById('progress-bar');
+            const statusText = document.getElementById('status-text');
+
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+
+            if (percentage === 100) {
+                statusText.textContent = 'CURRENT BILL RUN - INVOICE GENERATION: Completed';
+                progressBar.style.backgroundColor = '#4caf50';
+            } else if (percentage > 0) {
+                statusText.textContent = 'CURRENT BILL RUN - INVOICE GENERATION: In Progress';
+                progressBar.style.backgroundColor = '#2196f3';
+            } else {
+                statusText.textContent = 'CURRENT BILL RUN - INVOICE GENERATION: Not Started';
+                progressBar.style.backgroundColor = '#e0e0e0';
+            }
+        }
+
+        // Example of dynamic progress update
+        let progress = 0;
+        const interval = setInterval(() => {
+            if (progress <= 100) {
+                updateProgress(progress);
+                progress += 1;
+            } else {
+                clearInterval(interval);
+            }
+        }, 50);
+
+
+
         const dateData = {
             "15-mar-2025": {
-				date:"15-mar-2025",
-				BILL_ID:"812345",
-				status:"completed",
                 total: "5000",
                 revenue: "$1,200,000",
                 success: "4900",
                 error: "100 Failed"
-				
             },
             "01-mar-2025": {
-			date:"01-mar-2025",
-				BILL_ID:"912345",
-				status:"INPROGRESS",
                 total: "4500",
                 revenue: "$1,100,000",
                 success: "4400",
                 error: "100"
             },
             "15-feb-2025": {
-			date:"15-feb-2025",
-				BILL_ID:"712345",
-				status:"completed",
                 total: "4700",
                 revenue: "$1,150,000",
                 success: "4600",
                 error: "100"
             },
             "01-feb-2025": {
-			date:"01-feb-2025",
-				BILL_ID:"612345",
-				status:"INPROGRESS",
                 total: "4800",
                 revenue: "$1,180,000",
                 success: "4700",
@@ -567,8 +799,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const revenue = document.getElementById("revenue");
             const success = document.getElementById("success");
             const error = document.getElementById("error");
-			const BILL_ID = document.getElementById("BILL_ID");
-			const status = document.getElementById("status");
 
             dateList.innerHTML = "";
 
@@ -587,7 +817,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     revenue.textContent = `Revenue: ${dateData[date].revenue}`;
                     success.textContent = `Success: ${dateData[date].success}`;
                     error.textContent = `Error: ${dateData[date].error}`;
-					BILL_ID.textContent = `BILL_RUN_ID: ${dateData[date].BILL_ID} ${dateData[date].status}`;
                 }
 
                 anchor.addEventListener("click", (e) => {
@@ -597,9 +826,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     revenue.textContent = `Revenue: ${dateData[date].revenue}`;
                     success.textContent = `Success: ${dateData[date].success}`;
                     error.textContent = `Error: ${dateData[date].error}`;
-					BILL_ID.textContent = `BILL_RUN_ID: ${dateData[date].BILL_ID} ${dateData[date].status}`;
                 });
             });
         }
 
         document.addEventListener("DOMContentLoaded", populateDropdown);
+
+
+</script>
+<!--script src="js/script.js"></script-->
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; transition: background 0.3s; }
+        .dark-mode { background-color: #222; color: white; }
+        .chat-container { width: 350px; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); transition: background 0.3s; }
+        .dark-mode .chat-container { background: #333; color: white; }
+        .chat-box { height: 400px; overflow-y: auto; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .input-area { display: flex; }
+        .input-area input { flex: 1; padding: 5px; }
+        .input-area button { margin-left: 5px; }
+        .typing-indicator { font-size: 12px; color: gray; display: none; }
+        .toggle-mode { position: absolute; top: 10px; right: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <button class="toggle-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <button onclick="toggleVoiceInput()">Toggle Voice Input</button>
+    <button onclick="toggleTextToSpeech()">Toggle Text-to-Speech</button>
+    <button onclick="toggleChatExport()">Toggle Chat Export</button>
+    <button onclick="clearChat()">Clear Chat</button>
+    
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <p class="typing-indicator" id="typing-indicator">Bot is typing...</p>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+            <button id="voice-btn" onclick="startVoiceInput()">🎤</button>
+        </div>
+        <button id="export-btn" onclick="exportChat()">Export Chat</button>
+    </div>
+
+    <script>
+        let voiceInputEnabled = true;
+        let textToSpeechEnabled = true;
+        let chatExportEnabled = true;
+        const ruleBasedResponses = {
+            "hello": "Hi there! How can I help you?",
+            "how are you": "I'm just a bot, but I'm doing great!",
+            "bye": "Goodbye! Have a great day!"
+        };
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        function toggleVoiceInput() {
+            voiceInputEnabled = !voiceInputEnabled;
+            document.getElementById("voice-btn").style.display = voiceInputEnabled ? "inline-block" : "none";
+        }
+
+        function toggleTextToSpeech() {
+            textToSpeechEnabled = !textToSpeechEnabled;
+        }
+
+        function toggleChatExport() {
+            chatExportEnabled = !chatExportEnabled;
+            document.getElementById("export-btn").style.display = chatExportEnabled ? "inline-block" : "none";
+        }
+
+        function startVoiceInput() {
+            if (!voiceInputEnabled) return;
+            let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = "en-US";
+            recognition.start();
+            recognition.onresult = function(event) {
+                document.getElementById("user-input").value = event.results[0][0].transcript;
+            };
+        }
+
+        function speakResponse(text) {
+            if (!textToSpeechEnabled) return;
+            let speech = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(speech);
+        }
+
+        function exportChat() {
+            if (!chatExportEnabled) return;
+            let chatBox = document.getElementById("chat-box");
+            let chatContent = chatBox.innerText;
+            let blob = new Blob([chatContent], { type: "text/plain" });
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "chat_history.txt";
+            a.click();
+        }
+
+        function clearChat() {
+            document.getElementById("chat-box").innerHTML = "";
+        }
+
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value.trim().toLowerCase();
+            if (!userInput) return;
+            
+            let chatBox = document.getElementById("chat-box");
+            let userMessage = document.createElement("div");
+            userMessage.textContent = "You: " + userInput;
+            chatBox.appendChild(userMessage);
+            
+            document.getElementById("user-input").value = "";
+            
+            document.getElementById("typing-indicator").style.display = "block";
+            setTimeout(() => {
+                let botMessage = document.createElement("div");
+                let response = ruleBasedResponses[userInput] || "I'm not sure about that. Can you clarify?";
+                botMessage.textContent = "Bot: " + response;
+                chatBox.appendChild(botMessage);
+                document.getElementById("typing-indicator").style.display = "none";
+                speakResponse(response);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

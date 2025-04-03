@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Data Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+
+        #themeToggle {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <button id="themeToggle">Toggle Dark Mode</button>
+        <canvas id="billingChart"></canvas>
+    </div>
+
+    <script>
+        document.getElementById("themeToggle").addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+        });
+
+        function updateChart(labels, data1, data2, label1, label2) {
+            const ctx = document.getElementById("billingChart").getContext("2d");
+            if (window.myChart) window.myChart.destroy();
+
+            window.myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: label1,
+                            data: data1,
+                            borderColor: '#8A2BE2',
+                            backgroundColor: 'rgba(138, 43, 226, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: label2,
+                            data: data2,
+                            borderColor: '#20B2AA',
+                            backgroundColor: 'rgba(32, 178, 170, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { labels: { color: 'black' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: 'black' } },
+                        y: { ticks: { color: 'black' } }
+                    }
+                }
+            });
+        }
+
+        // Dummy Data for Initial Chart Render
+        updateChart(
+            ["Hour 1", "Hour 2", "Hour 3", "Hour 4", "Hour 5", "Hour 6"],
+            [100, 3000, 11000, 20000, 19000, 21000],
+            [152, 4011, 12156, 21695, 21212, 21862],
+            "15-JAN-2025",
+            "15-FEB-2025"
+        );
+    </script>
+
+</body>
+</html>
