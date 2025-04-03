@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Data Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        select, button {
+            padding: 8px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #20B2AA;
+            color: white;
+        }
+        .total-row {
+            font-weight: bold;
+            background: #ddd;
+        }
+        canvas {
+            margin-top: 20px;
+            background: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Billing Data Comparison</h2>
+
+        <div class="controls">
+            <label for="billingDate1">Select First Date:</label>
+<select id="billingDate1" onchange="refreshTable()"></select>
+
+<label for="billingDate2">Select Second Date:</label>
+<select id="billingDate2" onchange="refreshTable()"></select>
+            <button onclick="downloadCSV()">Download CSV</button>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Hour</th>
+                    <th><span id="selectedDate1">Date 1</span></th>
+                    <th><span id="selectedDate2">Date 2</span></th>
+                    <th>Difference</th>
+                </tr>
+            </thead>
+            <tbody id="tableContent"></tbody>
+        </table>
+
+        <canvas id="billingChart"></canvas>
+    </div>
+
+    <script>
+        const billingData = {
+            "15-JAN-2025": [100, 3000, 11000, 20000, 19000, 21000, 74000],
+            "15-FEB-2025": [152, 4011, 12156, 21695, 21212, 21862, 81088],
+            "15-MAR-2025": [152, 4061, 12491, 21866, 21593, 21470, 81633],
+            "15-APR-2025": [200, 4500, 13000, 22500, 22000, 23000, 85000],
+            "15-MAY-2025": [250, 5000, 14000, 23000, 22500, 24000, 88000]
+        };
+
+        function initializeDropdowns() {
+    let dropdown1 = document.getElementById("billingDate1");
+    let dropdown2 = document.getElementById("billingDate2");
+
+    let dates = Object.keys(billingData);
+    dropdown1.innerHTML = "";
+    dropdown2.innerHTML = "";
+
+    dates.forEach(date => {
+        dropdown1.add(new Option(date, date));
+        dropdown2.add(new Option(date, date));
+    });
+
+    if (dates.length > 1) {
+        dropdown1.selectedIndex = 0;
+        dropdown2.selectedIndex = 1;
+    }
+
+    refreshTable();
+}
+
+        function refreshTable() {
+            let selectedDate1 = document.getElementById("billingDate1").value;
+            let selectedDate2 = document.getElementById("billingDate2").value;
+            if (selectedDate1 === selectedDate2) return;
+
+            document.getElementById("selectedDate1").innerText = selectedDate1;
+            document.getElementById("selectedDate2").innerText = selectedDate2;
+
+            let tbody = document.getElementById("tableContent");
+            tbody.innerHTML = "";
+            let labels = [], data1 = [], data2 = [];
+
+            for (let i = 0; i < billingData[selectedDate1].length - 1; i++) {
+                let diff = billingData[selectedDate2][i] - billingData[selectedDate1][i];
+                tbody.innerHTML += `<tr>
+                    <td>${i + 1}</td>
+                    <td>${billingData[selectedDate1][i]}</td>
+                    <td>${billingData[selectedDate2][i]}</td>
+                    <td>${diff}</td>
+                </tr>`;
+                labels.push(`Hour ${i + 1}`);
+                data1.push(billingData[selectedDate1][i]);
+                data2.push(billingData[selectedDate2][i]);
+            }
+
+            tbody.innerHTML += `<tr class="total-row">
+                <td>TOTAL</td>
+                <td>${billingData[selectedDate1][6]}</td>
+                <td>${billingData[selectedDate2][6]}</td>
+                <td>${billingData[selectedDate2][6] - billingData[selectedDate1][6]}</td>
+            </tr>`;
+
+            updateChart(labels, data1, data2, selectedDate1, selectedDate2);
+        }
+
+       function updateChart(labels, data1, data2, label1, label2) {
+        const ctx = document.getElementById("billingChart").getContext("2d");
+        if (window.myChart) window.myChart.destroy();
+
+        window.myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: label1,
+                        data: data1,
+                        borderColor: '#8A2BE2',
+                        backgroundColor: 'rgba(138, 43, 226, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: label2,
+                        data: data2,
+                        borderColor: '#20B2AA',
+                        backgroundColor: 'rgba(32, 178, 170, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: 'black' } }
+                },
+                scales: {
+                    x: { ticks: { color: 'black' } },
+                    y: { ticks: { color: 'black' } }
+                }
+            }
+        });
+    }
+
+        function downloadCSV() {
+            let csvContent = "Hours,First Date,Second Date,Difference\n";
+            document.querySelectorAll("#tableContent tr").forEach(row => {
+                csvContent += Array.from(row.children).map(cell => cell.innerText).join(",") + "\n";
+            });
+
+            let blob = new Blob([csvContent], { type: "text/csv" });
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "billing_data_comparison.csv";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        window.onload = initializeDropdowns;
+    </script>
+
+</body>
+</html>
